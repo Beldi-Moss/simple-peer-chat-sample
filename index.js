@@ -6,7 +6,7 @@ getUserMedia({ video: true, audio: true }, function (err, stream) {
   console.log("create peer");
   var peer = new Peer({
     initiator: location.hash === '#init',
-    trickle: false,
+    trickle: true,
     stream: stream
   })
 
