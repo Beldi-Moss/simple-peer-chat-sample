@@ -2840,9 +2840,33 @@ getUserMedia({ video: true, audio: true }, function (err, stream) {
   if (err) {console.log('error ', err)}
 
   console.log("create peer");
+  var config = { 
+    "lifetimeDuration": "86400s",
+    "iceServers": [ 
+        {
+       "urls": [
+         "stun:74.125.140.127:19302",
+         "stun:[2a00:1450:400c:c08::7f]:19302"
+       ]
+     },
+    {
+       "urls": [
+         "turn:74.125.140.127:19305?transport=udp",
+         "turn:[2a00:1450:400c:c08::7f]:19305?transport=udp",
+         "turn:74.125.140.127:19305?transport=tcp",
+         "turn:[2a00:1450:400c:c08::7f]:19305?transport=tcp"
+       ],
+       "username": "CKy3/egFEgb9BBVd4lwYqvGggqMKIICjBQ",
+       "credential": "cgv31xsC2kreFtAkX50Bft6978Y=",
+ 
+     }
+ ],  "blockStatus": "NOT_BLOCKED",
+ "iceTransportPolicy": "all" 
+ };
   var peer = new Peer({
+    config: config,
     initiator: location.hash === '#init',
-    trickle: false,
+    trickle: true,
     stream: stream
   })
 
@@ -2866,7 +2890,7 @@ getUserMedia({ video: true, audio: true }, function (err, stream) {
   })
   peer.on('error', err => console.log('peer error', err))
   peer.on('stream', function (stream) {
-    var video = document.createElement('audio')
+    var video = document.createElement('video')
     document.body.appendChild(video)
     video.srcObject=stream;
     video.play()
